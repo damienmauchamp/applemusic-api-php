@@ -29,3 +29,6 @@
 
 # Composer
 composer.lock
+.env
+
+tests/local
