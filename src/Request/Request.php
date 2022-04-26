@@ -74,7 +74,7 @@ class Request {
 		if($this->method == 'POST') {
 			$headers[CURLOPT_POSTFIELDS] = is_array($this->body) ? json_encode($this->body) : $this->body;
 		}
-
+		
 		$this->logger->info('Headers: '.json_encode($headers), $headers);
 		$this->logger->info('Body: '.json_encode($this->body), is_array($this->body) ? $this->body : []);
 
@@ -85,7 +85,9 @@ class Request {
 		curl_close($curl);
 
 		$this->logger->info('Response: '.($infos['http_code'] ?? '---').' ', json_decode($response, true) ?: []);
-
+		if($err) {
+			$this->logger->error('Error: '.$err);
+		}
 		return new Response($response, $infos, $err);
 	}
 

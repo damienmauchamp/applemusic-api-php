@@ -29,6 +29,11 @@
 
 # Composer
 composer.lock
+
+# Configuration
 .env
 
-tests/local
+# Tests
+.phpunit.*
+.cache
+tests/local*

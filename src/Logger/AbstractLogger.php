@@ -31,6 +31,10 @@ class AbstractLogger {
 		$this->logger->info($message, $context);
 	}
 
+	public function error(string $message, array $context = []) {
+		$this->logger->error($message, $context);
+	}
+
 	/**
 	 * Loads environment variables from .env file
 	 * @return void

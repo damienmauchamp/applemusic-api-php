@@ -5,25 +5,26 @@ namespace AppleMusic\API;
 use AppleMusic\Logger\AppleMusicAPILogger;
 use AppleMusic\Request\Request;
 use Dotenv\Dotenv;
+use Exception;
 
 class AppleMusicAPI {
 
-	private $url = 'https://api.music.apple.com/v1';
-	private $storefront;
+	protected $url = 'https://api.music.apple.com/v1';
+	protected $storefront;
 
-	private $developer_token;
-	private $music_user_token;
+	protected $developer_token;
+	protected $music_user_token;
 
-	private $logger;
+	protected $logger;
 
 	/**
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function __construct(?string $developer_token = null, ?string $music_user_token = null, ?string $storefront = null) {
 		$this->loadEnv();
 		$this->developer_token = $developer_token ?? $_ENV['APPLE_MUSIC_DEVELOPER_TOKEN'];
 		if(!$this->developer_token) {
-			throw new \Exception('Developer token is required');
+			throw new Exception('Developer token is required');
 		}
 		$this->music_user_token = $music_user_token;
 		$this->storefront = $storefront ?? $_ENV['STOREFRONT'] ?: 'us';
@@ -33,6 +34,14 @@ class AppleMusicAPI {
 
 	public function getStorefront(): string {
 		return $this->storefront;
+	}
+
+	public function getDeveloperToken() {
+		return $this->developer_token;
+	}
+
+	public function getMusicUserToken() {
+		return $this->music_user_token;
 	}
 
 	public function get(string $endpoint, array $params = []): \AppleMusic\Request\Response {
@@ -49,7 +58,8 @@ class AppleMusicAPI {
 		if($this->developer_token) {
 			$headers[] = "Authorization: Bearer {$this->developer_token}";
 		}
-		if(strstr($endpoint, '/me/')) {
+
+		if($this->isMusicKitAPI() || preg_match('/(^|\/)me\//', $endpoint)) {
 			$headers[] = "Music-User-Token: {$this->music_user_token}";
 		}
 
@@ -70,5 +80,25 @@ class AppleMusicAPI {
 		$dotenv = Dotenv::createImmutable($dir);
 		$dotenv->load();
 	}
+
+	public function isMusicKitAPI(): bool {
+		return get_class($this) === MusicKitAPI::class;
+	}
+
+	public function setDeveloperToken(string $developer_token): void {
+		$this->developer_token = $developer_token;
+
+	}
+
+	public function setMusicUserToken(string $music_user_token): void {
+		$this->music_user_token = $music_user_token;
+
+	}
+
+	public function setStoreFront(string $storefront): void {
+		$this->storefront = $storefront;
+
+	}
+
 
 }
