@@ -1,2 +1,2 @@
 # applemusic-api-php
-Wrapper for Apple Music API
+PHP Wrapper for Apple Music API

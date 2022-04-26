@@ -1,0 +1,20 @@
+{
+    "name": "d_mchp/applemusic-api-php",
+    "description": "PHP Wrapper for Apple Music API",
+    "type": "library",
+    "license": "Apache-2.0",
+    "autoload": {
+        "psr-4": {
+            "AppleMusic\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Damien Mauchamp",
+            "email": "damienmauchamp@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2"
+    }
+}

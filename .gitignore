@@ -23,3 +23,9 @@
 /app/Config/core.php
 /app/Config/database.php
 /vendors/*
+
+# IDE
+.idea
+
+# Composer
+composer.lock
